@@ -27,6 +27,8 @@ class StoreServiceRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'session_count' => 'required|integer|min:0',
             'description' => 'nullable|string',
+            'num_invitions' => 'required|integer|min:0', // New field for number of invitations
+            'freeze_days' => 'required|integer|min:0',
         ];
     }
 }

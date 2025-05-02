@@ -17,9 +17,9 @@ class AdminUserController extends Controller
     public function index()
     {
         $admins = Admin::get();
-        return view('AdminPanel.members.index',[
-            'active' => 'Members',
-            'admins' =>$admins,
+        return view('AdminPanel.mangers.index', [
+            'active' => 'Mangers',
+            'admins' => $admins,
             'title' => trans('common.Admin Panel'),
             'breadcrumbs' => [
                 [
@@ -29,15 +29,16 @@ class AdminUserController extends Controller
             ]
         ]);
     }
-    public function create(){
-        $roles = Role::where('guard_name','web')->get();
-        return view('AdminPanel.members.create',[
+    public function create()
+    {
+        $roles = Role::where('guard_name', 'web')->get();
+        return view('AdminPanel.mangers.create', [
             'active' => 'Members',
             'roles' => $roles,
             'title' => trans('common.Admin Panel'),
             'breadcrumbs' => [
                 [
-                    'url' => route('admin.member'),
+                    'url' => route('admin.manger'),
                     'text' => trans('common.users')
                 ],
                 [
@@ -51,25 +52,25 @@ class AdminUserController extends Controller
     public function store(Request $request)
     {
         // dd($request->phone);
-        $data = $request->except(['_token','password','password_confirmation','role']);
+        $data = $request->except(['_token', 'password', 'password_confirmation', 'role']);
         $data['password'] = Hash::make($request->password);
         $admin = Admin::create($data);
         if (isset($request->role)) $admin->assignRole($request->role);
-        return redirect()->route('admin.member')->with('success', trans('common.successMessageText'));
+        return redirect()->route('admin.manger')->with('success', trans('common.successMessageText'));
     }
 
     public function edit($id)
     {
         $admin = Admin::find($id);
-        $roles = Role::where('guard_name','web')->get();
-        return view('AdminPanel.members.edit',[
-            'active' => 'Members',
+        $roles = Role::where('guard_name', 'web')->get();
+        return view('AdminPanel.mangers.edit', [
+            'active' => 'Mangers',
             'admin' => $admin,
             'roles' => $roles,
             'title' => trans('common.Admin Panel'),
             'breadcrumbs' => [
                 [
-                    'url' => route('admin.member'),
+                    'url' => route('admin.manger'),
                     'text' => trans('common.users')
                 ],
                 [
@@ -78,40 +79,37 @@ class AdminUserController extends Controller
                 ]
             ]
         ]);
-
-
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $admin = Admin::find($id);
-        $data = $request->except(['_token','password','password_confirmation','role']);
+        $data = $request->except(['_token', 'password', 'password_confirmation', 'role']);
         $data['password'] = Hash::make($request->password);
         $admin->update($data);
 
-        if($request->role !=null){
+        if ($request->role != null) {
             $admin->syncRoles($request->role);
             $admin->assignRole($request->role);
         }
-        if($admin)
-        {
-            return redirect()->route('admin.member')->with('success', trans('common.successMessageText'));
+        if ($admin) {
+            return redirect()->route('admin.manger')->with('success', trans('common.successMessageText'));
         } else {
             return redirect()->back()->with('faild', trans('common.faildMessageText'));
         }
     }
 
 
-    public function delete($id){
+    public function delete($id)
+    {
         $admin = Admin::find($id);
-        if($admin->image != null){
+        if ($admin->image != null) {
             Media::delete("images/profiles/{$admin->image}");
         }
         $admin->syncRoles();
         if ($admin->delete()) {
-            return Response::json($id);
+            return response()->json("true");
         }
-        return Response::json("false");
+        return response()->json("false");
     }
-
 }

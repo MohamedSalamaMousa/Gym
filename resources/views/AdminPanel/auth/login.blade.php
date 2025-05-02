@@ -52,6 +52,21 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets') }}/js/config.js"></script>
+    <style>
+        body {
+          background-image: url('{{ asset('images/backgrounds/gym-background.jpg') }}');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          min-height: 100vh;
+        }
+      
+        .card {
+          background-color: rgba(255, 255, 255, 0.85); /* Slightly transparent card */
+          border-radius: 15px;
+        }
+      </style>
+      
   </head>
 
   <body>
@@ -70,7 +85,7 @@
                 {{-- </a> --}}
               </div>
               <!-- /Logo -->
-              <h4 class="mb-2">TETEX EXPRESS 👋</h4>
+              <h4 class="mb-2">ELITE 👋</h4>
               {{-- <p class="mb-4">Please sign-in to your account and start the adventure</p> --}}
 
               <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST">

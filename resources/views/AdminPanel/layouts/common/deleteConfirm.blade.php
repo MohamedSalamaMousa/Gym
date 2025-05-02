@@ -1,42 +1,44 @@
 <script>
-    function confirmDelete(url,id) {
+    function confirmDelete(url, id) {
         Swal.fire({
-            title: '{{trans("common.Are you sure?")}}',
-            text: "{{trans('common.You wont be able to revert this!')}}",
+            title: '{{ trans('common.Are you sure?') }}',
+            text: "{{ trans('common.You wont be able to revert this!') }}",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: '{{trans("common.Yes, delete it!")}}',
-            cancelButtonText: '{{trans("common.Cancel")}}',
+            confirmButtonText: '{{ trans('common.Yes, delete it!') }}',
+            cancelButtonText: '{{ trans('common.Cancel') }}',
             customClass: {
-            confirmButton: 'btn btn-primary',
-            cancelButton: 'btn btn-outline-danger ms-1'
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-outline-danger ms-1'
             },
             buttonsStyling: false
-        }).then(function (result) {
+        }).then(function(result) {
             if (result.value) {
                 $.ajax({
-                    method   : 'get',
-                    url      : url,
-                    dataType : 'json',
-                    success : function(data){
-                        if(data != "false"){
+                    method: 'get',
+                    url: url,
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data != "false") {
                             Swal.fire({
                                 icon: 'success',
-                                title: '{{trans("common.Deleted!")}}',
-                                text: '{{trans("common.Your file has been deleted.")}}',
+                                title: '{{ trans('common.Deleted!') }}',
+                                text: '{{ trans('common.Your file has been deleted.') }}',
                                 customClass: {
-                                confirmButton: 'btn btn-success'
+                                    confirmButton: 'btn btn-success'
                                 }
                             });
-                            $('#row_'+data).fadeOut();
-                            $('#row_'+data).remove();
-                        }else{
+                            $('#row_' + data).fadeOut();
+                            $('#row_' + data).remove();
+                            // Reload the page after successful deletion
+                            location.reload();
+                        } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: '{{trans("common.NotDeleted!")}}',
-                                text: '{{trans("common.Your file has not been deleted.")}}',
+                                title: '{{ trans('common.NotDeleted!') }}',
+                                text: '{{ trans('common.Your file has not been deleted.') }}',
                                 customClass: {
-                                confirmButton: 'btn btn-success'
+                                    confirmButton: 'btn btn-success'
                                 }
                             });
                         }

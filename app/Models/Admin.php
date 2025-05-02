@@ -50,4 +50,12 @@ class Admin extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function members()
+    {
+        return $this->hasMany(Member::class);
+    }
+    public function gymSupplies()
+    {
+        return $this->hasMany(GymSupply::class, 'created_by');
+    }
 }

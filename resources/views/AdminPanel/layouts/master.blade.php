@@ -1,8 +1,8 @@
 <?php
- use Illuminate\Support\Facades\Session;
- use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
- ?>
+?>
 
 <!DOCTYPE html>
 
@@ -67,9 +67,10 @@
 
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/libs/apex-charts/apex-charts.css" />
     <link rel="stylesheet" href="{{ asset('assets/apex-charts/apex-charts.css') }}" />
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Page CSS -->
-  <script src="https://cdn.tiny.cloud/1/1fnhci9m77oppzg3o7z1wzip494uc5j0oxsbbqt91ezido5v/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  <script src="https://cdn.tiny.cloud/1/1fnhci9m77oppzg3o7z1wzip494uc5j0oxsbbqt91ezido5v/tinymce/6/tinymce.min.js"
+      referrerpolicy="origin"></script>
 
     <!-- Helpers -->
     <script src="{{ asset('assets') }}/vendor/js/helpers.js"></script>
@@ -138,10 +139,10 @@
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
                       @if ($admin->image != null)
-                              <img src="{{ asset("images/profiles/$admin->image") }}" alt class="w-px-40 h-auto rounded-circle" />
-                              @else
-                              <img src="{{ asset('assets') }}/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
-                              @endif
+<img src="{{ asset("images/profiles/$admin->image") }}" alt class="w-px-40 h-auto rounded-circle" />
+@else
+<img src="{{ asset('assets') }}/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+@endif
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -152,15 +153,15 @@
                             <div class="avatar avatar-online">
 
                               @if ($admin->image != null)
-                              <img src="{{ asset("images/profiles/$admin->image") }}" alt class="w-px-40 h-auto rounded-circle" />
-                              @else
-                              <img src="{{ asset('assets') }}/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
-                              @endif
+<img src="{{ asset("images/profiles/$admin->image") }}" alt class="w-px-40 h-auto rounded-circle" />
+@else
+<img src="{{ asset('assets') }}/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+@endif
                             </div>
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">{{ $admin->name }}</span>
-                            <small class="text-muted">{{ trans("common.".$admin->getRoleNames()[0])}}</small>
+                            <small class="text-muted">{{ trans('common.' . $admin->getRoleNames()[0]) }}</small>
                           </div>
                         </div>
                       </a>
@@ -253,7 +254,7 @@
                       document.write(new Date().getFullYear());
                   </script>
                   , {{ trans('common.made_with') }} ❤️ {{ trans('common.by') }}
-                  <a href="https://diraya-app.surge.sh/" target="_blank" class="footer-link fw-bolder">{{ trans('common.team') }}</a>
+                  <a href="https://www.linkedin.com/in/mohamed-salama-491877200/" target="_blank" class="footer-link fw-bolder">{{ trans('common.team') }}</a>
                 </div>
                 <!-- <div>
                   <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
@@ -323,47 +324,46 @@
     <script src="{{ asset('assets/apex-charts/apexcharts.js') }}"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     @yield('js')
     @include('AdminPanel.layouts.common.deleteConfirm')
     {{-- @include('AdminPanel.layouts.common.tinymce') --}}
 
-    @if(Session::get('success'))
+    @if (Session::get('success'))
+<script>
+    $(window).on('load', function() {
+        setTimeout(function() {
+            toastr['success'](
+                '{{ Session::get('success') }}',
+                '👋 {{ trans('common.successMessageTitle') }}', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    rtl: '{{ trans('common.dir') }}'
+                }
+            );
+        }, 100);
+    })
+</script>
+@endif
 
-        <script>
-            $(window).on('load', function () {
-                setTimeout(function () {
-                    toastr['success'](
-                    '{{Session::get("success")}}',
-                    '👋 {{trans("common.successMessageTitle")}}',
-                    {
-                        closeButton: true,
-                        tapToDismiss: false,
-                        rtl: '{{trans("common.dir")}}'
-                    }
-                    );
-                }, 100);
-            })
-        </script>
-    @endif
-
-    @if(Session::get('faild'))
-
-        <script>
-            $(window).on('load', function () {
-                setTimeout(function () {
-                    toastr['error'](
-                    '{{Session::get("faild")}}',
-                    '👋 {{trans("common.faildMessageTitle")}}',
-                    {
-                        closeButton: true,
-                        tapToDismiss: false,
-                        rtl: '{{trans("common.dir")}}'
-                    }
-                    );
-                }, 100);
-            })
-        </script>
-        {{Session::forget('faild')}}
-    @endif
+    @if (Session::get('faild'))
+<script>
+    $(window).on('load', function() {
+        setTimeout(function() {
+            toastr['error'](
+                '{{ Session::get('faild') }}',
+                '👋 {{ trans('common.faildMessageTitle') }}', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    rtl: '{{ trans('common.dir') }}'
+                }
+            );
+        }, 100);
+    })
+</script>
+        {{ Session::forget('faild') }}
+@endif
   </body>
 </html>

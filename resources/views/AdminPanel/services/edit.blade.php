@@ -1,55 +1,82 @@
 <div class="offcanvas offcanvas-end" id="edit-service-modal">
     <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title">{{ __('common.edit') }} {{ __('common.service') }}</h5>
+        <h5 class="offcanvas-title">Edit Service</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body flex-grow-1">
-        <form id="form-edit-service" method="POST">
+        <form id="form-edit-service" method="POST" action="{{ route('admin.service.update') }}">
             @csrf
-            @method('PUT') <!-- Ensure the PUT request is sent -->
-            <input type="hidden" id="editServiceId" name="id">
+            @method('Post') <!-- Ensure PUT method for update -->
+
+            <input type="hidden" name="id" id="edit-service-id">
 
             <div class="col-sm-12 form-control-validation">
-                <label class="form-label" for="editServiceName">{{ __('common.name of service') }}</label>
+                <label class="form-label" for="edit-serviceName">{{ __('common.name of service') }}</label>
                 <div class="input-group input-group-merge">
-                    <span id="editServiceName2" class="input-group-text"><i class="icon-base bx bx-cog"></i></span>
-                    <input type="text" id="editServiceName" class="form-control" name="name" required>
+                    <span id="edit-serviceName2" class="input-group-text"><i class="icon-base bx bx-cog"></i></span>
+                    <input type="text" id="edit-serviceName" class="form-control" name="name"
+                        placeholder="{{ __('common.name of service') }}" aria-label="اسم الخدمة"
+                        aria-describedby="edit-serviceName2" required>
                 </div>
             </div>
 
             <div class="col-sm-12 form-control-validation">
-                <label class="form-label" for="editServicePrice">{{ trans('common.price') }}</label>
+                <label class="form-label" for="edit-servicePrice">{{ trans('common.price') }} </label>
                 <div class="input-group input-group-merge">
-                    <span id="editServicePrice2" class="input-group-text"><i class="icon-base bx bx-dollar"></i></span>
-                    <input type="number" id="editServicePrice" name="price" class="form-control" required
-                        step="0.01">
+                    <span id="edit-servicePrice2" class="input-group-text"><i class="icon-base bx bx-dollar"></i></span>
+                    <input type="number" id="edit-servicePrice" name="price" class="form-control"
+                        placeholder="{{ trans('common.price') }}" aria-label="سعر الخدمة"
+                        aria-describedby="edit-servicePrice2" required step="0.01">
                 </div>
             </div>
 
+
             <div class="col-sm-12 form-control-validation">
-                <label class="form-label" for="editSessionCount">{{ __('common.Number of sessions') }}</label>
+                <label class="form-label" for="edit-sessionCount"> {{ __('common.Number of sessions') }}</label>
                 <div class="input-group input-group-merge">
-                    <span id="editSessionCount2" class="input-group-text"><i
+                    <span id="edit-sessionCount2" class="input-group-text"><i
                             class="icon-base bx bx-calendar-check"></i></span>
-                    <input type="number" id="editSessionCount" name="session_count" class="form-control" required
-                        min="0">
+                    <input type="number" id="edit-sessionCount" name="session_count" class="form-control"
+                        placeholder="{{ __('common.Number of sessions') }}" aria-label="عدد الجلسات المتاحة"
+                        aria-describedby="edit-sessionCount2" required min="0">
+                </div>
+            </div>
+            <div class="col-sm-12 form-control-validation">
+                <label class="form-label" for="edit-servicePrice">{{ trans('common.Number of Invitions') }} </label>
+                <div class="input-group input-group-merge">
+                    <span id="edit-servicePrice2" class="input-group-text"><i
+                            class="icon-base bx bx-user-plus"></i></span>
+                    <input type="number" id="edit-serviceInvitions" name="num_invitions" class="form-control"
+                        placeholder="{{ trans('common.Number of Invitions') }}" aria-label="عدد الدعوات "
+                        aria-describedby="edit-servicePrice2" required min="0">
+                </div>
+            </div>
+            <div class="col-sm-12 form-control-validation">
+                <label class="form-label" for="edit-servicePrice">{{ trans('common.freeze_days') }} </label>
+                <div class="input-group input-group-merge">
+                    <span id="edit-servicePrice2" class="input-group-text"><i
+                            class="icon-base bx bx-pause-circle"></i></span>
+                    <input type="number" id="edit-freezeDays" name="freeze_days" class="form-control"
+                        placeholder="{{ trans('common.freeze_days') }}" aria-label="عدد أيام التجميد"
+                        aria-describedby="edit-servicePrice2" required min="0">
                 </div>
             </div>
 
+
+
             <div class="col-sm-12 form-control-validation">
-                <label class="form-label" for="editServiceDescription">{{ __('common.description') }}</label>
+                <label class="form-label" for="edit-serviceDescription">{{ __('common.description') }} </label>
                 <div class="input-group input-group-merge">
-                    <span id="editServiceDescription2" class="input-group-text"><i
+                    <span id="edit-serviceDescription2" class="input-group-text"><i
                             class="icon-base bx bx-edit"></i></span>
-                    <textarea id="editServiceDescription" name="description" class="form-control" rows="4"></textarea>
+                    <textarea id="edit-serviceDescription" name="description" class="form-control" placeholder=""
+                        aria-label="{{ __('common.description') }}" aria-describedby="edit-serviceDescription2" rows="4"></textarea>
                 </div>
             </div>
 
             <div class="col-sm-12">
-                <button type="submit"
-                    class="btn btn-primary data-submit me-sm-4 me-1">{{ __('common.update') }}</button>
-                <button type="reset" class="btn btn-outline-secondary"
-                    data-bs-dismiss="offcanvas">{{ __('common.cancel') }}</button>
+                <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Submit</button>
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
             </div>
         </form>
     </div>

@@ -7,12 +7,13 @@ use App\Http\Requests\StoreServiceRequest;
 use App\Models\Service;
 use Illuminate\Http\Request;
 
+
 class ServiceController extends Controller
 {
     //
     public function index()
     {
-        $services = Service::get();
+        $services = Service::latest()->paginate(10);
         return view('AdminPanel.services.index', [
             'active' => 'services',
             'services' => $services,
@@ -38,6 +39,9 @@ class ServiceController extends Controller
             'price' => $validated['price'],
             'session_count' => $validated['session_count'],
             'description' => $validated['description'],
+            'num_invitions' => $validated['num_invitions'], // New field for number of invitations
+            'freeze_days' => $validated['freeze_days'],
+            'created_by' => auth()->user()->name, // Assuming you have a logged-in user
         ]);
 
         // Redirect back with success message
@@ -47,9 +51,11 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         $service = Service::findOrFail($id);
-        $service->delete();
-        return redirect()->route('admin.service')
-            ->with('success', trans('common.deleteService'));
+
+        if ($service->delete()) {
+            return response()->json("true");
+        }
+        return response()->json("false");
     }
     public function update(Request $request)
     {
@@ -60,6 +66,8 @@ class ServiceController extends Controller
             'price' => 'required|numeric|min:0',
             'session_count' => 'required|integer|min:0',
             'description' => 'nullable|string|max:1000',
+            'num_invitions' => 'required|integer|min:0', // New field for number of invitations
+            'freeze_days' => 'required|integer|min:0',
         ]);
 
         // Find the service by ID and update it
@@ -68,12 +76,23 @@ class ServiceController extends Controller
         $service->price = $validatedData['price'];
         $service->session_count = $validatedData['session_count'];
         $service->description = $validatedData['description'] ?? $service->description;
+        $service->num_invitions = $validatedData['num_invitions']; // Update the number of invitations
+        $service->freeze_days = $validatedData['freeze_days'];
+        $service->updated_by = auth()->user()->name; // Assuming you have a logged-in user
 
         // Save the updated service
         $service->save();
         return redirect()->route('admin.service')
-        ->with('success', trans('Service updated successfully'));
-        
+            ->with('success', trans('Service updated successfully'));
+    }
+    public function toggleStatus($id, Request $request)
+    {
+        $service = Service::findOrFail($id);
 
+        // Update the service status
+        $service->status = $request->status;
+        $service->save();
+
+        return response()->json(['success' => true]);
     }
 }
